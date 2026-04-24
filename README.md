@@ -1,4 +1,4 @@
-# 🛡️ IntegritiKontrak AI
+# 🛡️ KONTRAX AI
 ### Procurement Integrity Advisor for Malaysian Government Contracts
 
 > **Prototype v1.0** — Shift from reactive corruption detection to **proactive integrity-by-design**
