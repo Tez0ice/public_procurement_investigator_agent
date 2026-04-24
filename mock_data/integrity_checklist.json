@@ -1,0 +1,99 @@
+{
+  "mandatory_clauses": [
+    {
+      "id": "BO_DISCLOSURE",
+      "name": "Beneficial Ownership Disclosure",
+      "name_bm": "Pendedahan Pemilikan Benefisial",
+      "description": "Vendor must disclose all beneficial owners with >25% stake",
+      "keywords": ["beneficial owner", "pemilikan benefisial", "shareholding", "pemegang saham"],
+      "required": true,
+      "weight": 20,
+      "suggestion_en": "Add clause: 'The Vendor shall disclose all beneficial owners holding more than 25% equity stake, in compliance with the Companies Act 2016 Section 60E. Non-disclosure constitutes material breach.'",
+      "suggestion_bm": "Tambah klausa: 'Vendor hendaklah mendedahkan semua pemilik benefisial yang memegang lebih 25% ekuiti, selaras Akta Syarikat 2016 Seksyen 60E. Ketidakpendedahan adalah pelanggaran material.'"
+    },
+    {
+      "id": "VARIATION_CAP",
+      "name": "Variation / Change Order Cap",
+      "name_bm": "Had Variasi / Perintah Perubahan",
+      "description": "Contract variations must be capped (typically ≤15% per Malaysian Treasury Circular)",
+      "keywords": ["variation", "variasi", "change order", "perintah perubahan", "addendum", "amendment"],
+      "required": true,
+      "weight": 20,
+      "suggestion_en": "Add clause: 'Total contract variations shall not exceed 15% of the original contract sum, per Surat Pekeliling Perbendaharaan (SPP) provisions. Any variation exceeding this cap requires fresh procurement.'",
+      "suggestion_bm": "Tambah klausa: 'Jumlah variasi kontrak tidak melebihi 15% daripada jumlah asal kontrak, mengikut peruntukan SPP. Variasi melebihi had ini memerlukan perolehan baharu.'"
+    },
+    {
+      "id": "AUDIT_RIGHT",
+      "name": "Right to Audit & MACC Compliance",
+      "name_bm": "Hak Mengaudit & Pematuhan SPRM",
+      "description": "Government/client retains right to audit vendor books; vendor acknowledges MACC Act obligations",
+      "keywords": ["audit", "right to audit", "MACC", "SPRM", "anti-corruption", "anti-rasuah", "inspect"],
+      "required": true,
+      "weight": 20,
+      "suggestion_en": "Add clause: 'The Government reserves the right to audit all financial records related to this contract at any time. The Vendor acknowledges obligations under the MACC Act 2009 and shall cooperate fully with any investigation.'",
+      "suggestion_bm": "Tambah klausa: 'Kerajaan berhak mengaudit semua rekod kewangan berkaitan kontrak ini pada bila-bila masa. Vendor mengakui kewajipan di bawah Akta SPRM 2009 dan akan bekerjasama sepenuhnya dalam sebarang siasatan.'"
+    },
+    {
+      "id": "TRANSPARENCY_PUB",
+      "name": "Open Data / Publication Commitment",
+      "name_bm": "Komitmen Data Terbuka / Penerbitan",
+      "description": "Contract key details to be published in machine-readable format per Open Contracting Standard",
+      "keywords": ["publish", "terbit", "disclose", "dedah", "transparency", "ketelusan", "public record", "rekod awam"],
+      "required": true,
+      "weight": 15,
+      "suggestion_en": "Add clause: 'Key contract details including vendor identity, contract value, scope, and milestones shall be published on the government procurement portal within 30 days of signing, in compliance with Open Contracting Data Standard (OCDS).'",
+      "suggestion_bm": "Tambah klausa: 'Butiran kontrak utama termasuk identiti vendor, nilai kontrak, skop dan pencapaian hendaklah diterbitkan di portal perolehan kerajaan dalam 30 hari selepas tandatangan, mengikut piawaian OCDS.'"
+    },
+    {
+      "id": "CONFLICT_OF_INTEREST",
+      "name": "Conflict of Interest Declaration",
+      "name_bm": "Pengisytiharan Konflik Kepentingan",
+      "description": "Both parties declare no conflict of interest; any conflict must be disclosed and managed",
+      "keywords": ["conflict of interest", "konflik kepentingan", "declaration", "pengisytiharan", "related party", "pihak berkaitan"],
+      "required": true,
+      "weight": 15,
+      "suggestion_en": "Add clause: 'Both parties declare that no conflict of interest exists in this procurement. Any subsequent conflict of interest must be disclosed in writing within 14 days. Undisclosed conflicts constitute grounds for contract termination.'",
+      "suggestion_bm": "Tambah klausa: 'Kedua-dua pihak mengisytiharkan tiada konflik kepentingan dalam perolehan ini. Sebarang konflik kepentingan berikutnya mesti didedahkan secara bertulis dalam 14 hari. Konflik yang tidak didedahkan merupakan alasan penamatan kontrak.'"
+    },
+    {
+      "id": "PERFORMANCE_BOND",
+      "name": "Performance Bond / Bank Guarantee",
+      "name_bm": "Bon Pelaksanaan / Jaminan Bank",
+      "description": "Vendor provides performance bond (typically 5-10% of contract value) as financial security",
+      "keywords": ["performance bond", "bon pelaksanaan", "bank guarantee", "jaminan bank", "security deposit", "deposit keselamatan"],
+      "required": false,
+      "weight": 10,
+      "suggestion_en": "Add clause: 'The Vendor shall furnish a Performance Bond equivalent to 5% of the contract sum within 14 days of contract award, valid for the contract duration plus 6 months.'",
+      "suggestion_bm": "Tambah klausa: 'Vendor hendaklah mengemukakan Bon Pelaksanaan bersamaan 5% daripada jumlah kontrak dalam 14 hari selepas pemberian kontrak, sah untuk tempoh kontrak tambah 6 bulan.'"
+    },
+    {
+      "id": "TERMINATION_CORRUPT",
+      "name": "Termination for Corruption / Fraud Clause",
+      "name_bm": "Klausa Penamatan Kerana Rasuah / Penipuan",
+      "description": "Contract can be terminated immediately if vendor is found engaging in corruption or fraud",
+      "keywords": ["terminat", "tamat", "corruption", "rasuah", "fraud", "penipuan", "bribery", "suapan", "misconduct", "salah laku"],
+      "required": true,
+      "weight": 20,
+      "suggestion_en": "Add clause: 'This contract shall be immediately terminated if the Vendor, its directors, employees or agents are found guilty of corruption, fraud, or bribery under the MACC Act 2009 or Penal Code. All payments shall be suspended pending investigation.'",
+      "suggestion_bm": "Tambah klausa: 'Kontrak ini akan ditamatkan serta-merta jika Vendor, pengarah, pekerja atau agennya didapati bersalah atas rasuah, penipuan atau suapan di bawah Akta SPRM 2009 atau Kanun Keseksaan. Semua pembayaran akan digantung sementara menunggu siasatan.'"
+    }
+  ],
+  "weak_language_patterns": [
+    {"pattern": "may consider", "issue": "Non-binding language — replace with 'shall'"},
+    {"pattern": "best efforts", "issue": "Vague obligation — specify measurable KPIs"},
+    {"pattern": "reasonable time", "issue": "Undefined timeline — specify exact days/dates"},
+    {"pattern": "subject to availability", "issue": "Creates escape clause — remove or define conditions"},
+    {"pattern": "at vendor's discretion", "issue": "Removes government oversight — replace with specific criteria"}
+  ],
+  "scoring": {
+    "missing_mandatory": -20,
+    "missing_optional": -10,
+    "weak_language_per_instance": -5,
+    "full_mandatory_compliance": 30,
+    "grade_thresholds": {
+      "strong": 70,
+      "moderate": 40,
+      "weak": 0
+    }
+  }
+}

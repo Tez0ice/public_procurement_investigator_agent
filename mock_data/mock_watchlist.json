@@ -1,0 +1,94 @@
+{
+  "pep_vendors": [
+    {
+      "name": "Alpha Dinamik Sdn Bhd",
+      "reason": "Director linked to public official (2022 MACC investigation)",
+      "risk_level": "HIGH"
+    },
+    {
+      "name": "Konsortium Beta Jaya",
+      "reason": "Appeared in PAC Report 2023 for inflated pricing",
+      "risk_level": "HIGH"
+    },
+    {
+      "name": "Maju Teknikal Resources",
+      "reason": "Debarred vendor — defaulted on MoH contract 2021",
+      "risk_level": "HIGH"
+    },
+    {
+      "name": "Pembinaan Gamma Bersatu",
+      "reason": "Shell company flag — incorporated 3 weeks before tender",
+      "risk_level": "MEDIUM"
+    },
+    {
+      "name": "Delta ICT Solutions",
+      "reason": "Repeated direct negotiation awards — concentration risk",
+      "risk_level": "MEDIUM"
+    }
+  ],
+  "price_benchmarks": {
+    "laptop": {
+      "unit": "unit",
+      "benchmark_rm": 3500,
+      "description": "Standard business laptop (14\", Core i5, 16GB RAM)",
+      "source": "ePerolehan 2024 Q4 average"
+    },
+    "desktop": {
+      "unit": "unit",
+      "benchmark_rm": 2800,
+      "description": "Standard desktop workstation",
+      "source": "ePerolehan 2024 Q4 average"
+    },
+    "server": {
+      "unit": "unit",
+      "benchmark_rm": 18000,
+      "description": "Rack server (2U, dual Xeon, 64GB RAM)",
+      "source": "JPA ICT procurement guide 2024"
+    },
+    "printer": {
+      "unit": "unit",
+      "benchmark_rm": 1200,
+      "description": "A4 laser printer",
+      "source": "ePerolehan 2024 Q4 average"
+    },
+    "road_construction": {
+      "unit": "km",
+      "benchmark_rm": 850000,
+      "description": "Rural road construction (2-lane, sealed)",
+      "source": "JKR standard rates 2024"
+    },
+    "building_construction": {
+      "unit": "sqft",
+      "benchmark_rm": 250,
+      "description": "Standard government office building (Class A)",
+      "source": "CIDB cost data 2024"
+    },
+    "software_license": {
+      "unit": "user/year",
+      "benchmark_rm": 500,
+      "description": "Enterprise productivity software per user",
+      "source": "MAMPU procurement guide 2024"
+    },
+    "consultancy": {
+      "unit": "day",
+      "benchmark_rm": 2500,
+      "description": "IT/Management consultancy (senior consultant)",
+      "source": "ICU Malaysia rate card 2024"
+    }
+  },
+  "procurement_method_thresholds": {
+    "direct_negotiation_limit_rm": 50000,
+    "quotation_limit_rm": 500000,
+    "open_tender_minimum_rm": 500000,
+    "note": "Per Arahan Perbendaharaan 2023"
+  },
+  "high_risk_terms": [
+    "sole source",
+    "proprietary",
+    "only supplier",
+    "emergency waiver",
+    "cabinet approval bypassed",
+    "limited competition",
+    "restricted tender"
+  ]
+}
