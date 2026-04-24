@@ -5,6 +5,8 @@ Run: streamlit run app.py
 
 import streamlit as st
 from agents import check_clause_integrity, scan_contract
+import hashlib
+from datetime import datetime
 
 st.set_page_config(
     page_title="KONTRAX",
@@ -75,13 +77,51 @@ textarea {
 textarea:focus { border-color: var(--green) !important; box-shadow: 0 0 0 2px rgba(74,222,128,0.1) !important; }
 textarea::placeholder { color: var(--text3) !important; }
 
-/* File uploader */
+/* ── File Uploader (Specific Selectors - FIXED) ───────────────────────────── */
 [data-testid="stFileUploaderDropzone"] {
-  background: var(--surface) !important; border: 2px dashed var(--border2) !important;
-  border-radius: var(--radius-lg) !important; padding: 1.5rem !important;
+  background: var(--surface) !important;
+  border: 2px dashed var(--border2) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 1.5rem !important;
+  min-height: 120px !important;
 }
-[data-testid="stFileUploaderDropzone"]:hover { border-color: var(--green) !important; }
-[data-testid="stFileUploaderDropzone"] * { color: var(--text2) !important; }
+
+[data-testid="stFileUploaderDropzone"]:hover {
+  border-color: var(--green) !important;
+  background: rgba(74,222,128,0.03) !important;
+}
+
+/* Target ONLY the browse button inside file uploader */
+[data-testid="stFileUploaderDropzone"] [data-testid="stBaseButton-secondary"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border2) !important;
+  color: var(--text) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem !important;
+  margin-top: 8px !important;
+}
+
+[data-testid="stFileUploaderDropzone"] [data-testid="stBaseButton-secondary"]:hover {
+  border-color: var(--green) !important;
+  background: var(--surface) !important;
+}
+
+/* File uploader text elements */
+[data-testid="stFileUploaderDropzone"] p,
+[data-testid="stFileUploaderDropzone"] span,
+[data-testid="stFileUploaderDropzone"] label {
+  color: var(--text2) !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* Uploaded file chip styling */
+[data-testid="stFileUploaderDropzone"] [data-testid="stFileUploaderFile"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
 
 /* Buttons */
 .stButton > button {
@@ -142,13 +182,32 @@ textarea::placeholder { color: var(--text3) !important; }
 /* Caption */
 .stCaption, [data-testid="stCaptionContainer"] p { color: var(--text3) !important; font-size: 0.76rem !important; }
 
-/* Dialog */
-[data-testid="stDialog"] > div {
-  background: var(--surface) !important; border: 1px solid var(--border2) !important;
-  border-radius: var(--radius-lg) !important; box-shadow: 0 24px 64px rgba(0,0,0,0.7) !important;
+/* ── Dialog Component Fixes (FIXED) ─────────────────────────────────────── */
+[data-testid="stDialog"] {
+  z-index: 9999 !important;
 }
 
-hr { border-color: var(--border) !important; }
+[data-testid="stDialog"] > div:first-child {
+  background: var(--surface) !important;
+  border: 1px solid var(--border2) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.7) !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+}
+
+/* Ensure text inside dialog respects theme */
+[data-testid="stDialog"] p,
+[data-testid="stDialog"] span,
+[data-testid="stDialog"] div:not([class*="stMarkdown"]) {
+  color: var(--text) !important;
+}
+
+/* Fix expander styling inside dialog */
+[data-testid="stDialog"] [data-testid="stExpander"] {
+  background: var(--surface2) !important;
+  border-color: var(--border) !important;
+}
 
 /* ── Custom Components ───────────────────────────────── */
 .hero {
@@ -226,6 +285,28 @@ hr { border-color: var(--border) !important; }
   font-size: 0.73rem; color: var(--text3) !important; text-align: center;
   border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 2rem; line-height: 1.6;
 }
+
+/* Scrollable container for dialog content */
+.dialog-scroll {
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.dialog-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.dialog-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dialog-scroll::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 3px;
+}
+.dialog-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--border);
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -247,6 +328,67 @@ def sev_badge(sev):
     return f"<span class='sev-badge' style='background:{cfg[0]};color:{cfg[1]};'>{sev}</span>"
 
 
+# ── Report Formatter ─────────────────────────────────────────────────────────
+def format_report_markdown(result: dict) -> str:
+    """Convert result dict to readable markdown format."""
+    mode = result.get("mode", "")
+    lines = [
+        "# 🛡️ KONTRAX Analysis Report",
+        f"**Generated:** {result.get('timestamp', datetime.now().isoformat())}",
+        f"**Input Hash:** `{result.get('input_hash', 'N/A')}`",
+        f"**Mode:** {mode}",
+        "",
+        "## 📊 Summary",
+    ]
+    
+    if mode == "clause_integrity_check":
+        lines.extend([
+            f"- **Integrity Score:** {result.get('score', 0)}/100 ({result.get('grade', 'N/A')})",
+            f"- **Clauses Present:** {sum(1 for f in result.get('clause_findings',[]) if f['status']=='PRESENT')}",
+            f"- **Clauses Missing:** {sum(1 for f in result.get('clause_findings',[]) if f['status']=='MISSING')}",
+            f"- **Weak Phrases:** {len(result.get('weak_language', []))}",
+        ])
+    else:
+        lines.extend([
+            f"- **Risk Score:** {result.get('risk_score', 0)}/100 ({result.get('risk_label', 'N/A')})",
+            f"- **Total Flags:** {len(result.get('flags', []))}",
+            f"- **High/Critical:** {sum(1 for f in result.get('flags',[]) if f.get('severity') in ('HIGH','CRITICAL'))}",
+        ])
+    
+    llm = result.get("llm_analysis", {})
+    assessment = llm.get("llm_assessment") or llm.get("risk_narrative")
+    if assessment:
+        lines.extend(["", "## 🤖 AI Assessment", f"> {assessment}"])
+    
+    if result.get("clause_findings"):
+        lines.extend(["", "## 📋 Clause Checklist"])
+        for f in result["clause_findings"]:
+            status = "✅" if f["status"]=="PRESENT" else "❌"
+            req = " *(Required)*" if f.get("required") else ""
+            lines.append(f"- {status} **{f.get('name', '')}**{req}")
+            if f.get("suggestion_en") and f["status"] != "PRESENT":
+                lines.append(f"  - 💡 {f['suggestion_en']}")
+    
+    if result.get("flags"):
+        lines.extend(["", "## 🚩 Detected Red Flags"])
+        for f in sorted(result["flags"], key=lambda x: {"CRITICAL":0,"HIGH":1,"MEDIUM":2,"LOW":3}.get(x.get("severity","LOW"),4)):
+            sev = f.get("severity", "LOW")
+            icon = "🔴" if sev in ("HIGH","CRITICAL") else ("🟡" if sev=="MEDIUM" else "🟢")
+            lines.append(f"- {icon} **{f.get('title', '')}** [{sev}]")
+            lines.append(f"  - {f.get('message', '')}")
+            if f.get("suggested_action"):
+                lines.append(f"  - ✅ {f['suggested_action']}")
+    
+    if result.get("next_steps"):
+        lines.extend(["", "## 🎯 Recommended Next Steps"])
+        for i, step in enumerate(result["next_steps"], 1):
+            lines.append(f"{i}. {step}")
+    
+    lines.extend(["", "---", "*⚠️ Advisory only. Verify all findings with a qualified procurement officer.*"])
+    
+    return "\n".join(lines)
+
+
 # ── Full Report Dialog ─────────────────────────────────────────────────────────
 @st.dialog("Full Analysis Report", width="large")
 def show_report(result: dict):
@@ -254,6 +396,9 @@ def show_report(result: dict):
     score = result.get("score",0) if mode=="clause_integrity_check" else result.get("risk_score",0)
     color = score_color(score)
     llm   = result.get("llm_analysis", {})
+
+    # Scrollable container for long reports
+    st.markdown('<div class="dialog-scroll">', unsafe_allow_html=True)
 
     if mode == "clause_integrity_check":
         grade   = result.get("grade","")
@@ -362,10 +507,14 @@ def show_report(result: dict):
             for i, step in enumerate(result["next_steps"],1):
                 st.markdown(f"<div class='step-row'><div class='step-num'>{i}</div><div class='step-text'>{step}</div></div>", unsafe_allow_html=True)
 
+    # Close scrollable container
+    st.markdown("</div>", unsafe_allow_html=True)
+    
     st.markdown("---")
     st.download_button("📄 Download Report (.md)",
-        data=f"# KONTRAX Report\nGenerated: {result.get('timestamp','')}\nHash: {result.get('input_hash','')}\n\n{str(result)}",
-        file_name=f"report_{result.get('input_hash','')}.md", mime="text/markdown",
+        data=format_report_markdown(result),
+        file_name=f"kontrax_report_{result.get('input_hash', 'export')}.md", 
+        mime="text/markdown",
         use_container_width=True)
     st.caption("⚠️ Advisory only. Verify all findings with a qualified procurement officer.")
 
@@ -486,9 +635,25 @@ with tab2:
 
         if "PDF" in method:
             st.markdown("<div class='section-label'>PDF Contract</div>", unsafe_allow_html=True)
-            pdf_file = st.file_uploader("pdf_up", type=["pdf"], label_visibility="collapsed")
+            pdf_file = st.file_uploader(
+                "pdf_up", 
+                type=["pdf"], 
+                label_visibility="collapsed",
+                help="Upload a PDF contract document (max 200MB)"
+            )
             if pdf_file:
-                st.success(f"📄 **{pdf_file.name}** ready to scan")
+                st.markdown(f"""
+                <div style='background:rgba(74,222,128,0.08);border:1px solid var(--green-dim);
+                     border-radius:8px;padding:0.5rem 1rem;margin-top:0.75rem;
+                     display:flex;align-items:center;gap:0.5rem;'>
+                  <span style='font-size:1.1rem;'>📄</span>
+                  <span style='font-size:0.85rem;color:var(--text);font-weight:500;'>
+                    {pdf_file.name}
+                  </span>
+                  <span style='font-size:0.7rem;color:var(--text3);margin-left:auto;'>
+                    {pdf_file.size/1024:.1f} KB
+                  </span>
+                </div>""", unsafe_allow_html=True)
         else:
             st.markdown("<div class='section-label'>Contract Text</div>", unsafe_allow_html=True)
             scan_text = st.text_area("s_input", height=240,
